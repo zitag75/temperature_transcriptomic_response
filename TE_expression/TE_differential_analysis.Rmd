@@ -1,0 +1,211 @@
+---
+title: "TE_expression_analysis"
+output: html_document
+date: "2025-08-14"
+---
+
+```{r}
+#load pacakges
+setwd("/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/TEtools")
+library(tidyverse)
+library(DESeq2)
+library(vsn)
+library(ggrepel)
+library(pheatmap)
+```
+
+
+## generating TE rosette file
+```{r}
+TE_header <- read.delim(file="/Users/zitagao/Documents/hpc_stuff/dm6_ref/bergman_TE_header.txt", sep="\n",header=F)
+colnames(TE_header) <- "fastq_name"
+tibble(fastq_name = TE_header$fastq_name)
+
+bergman_rosette <- TE_header %>%
+    mutate(
+    family = str_extract(fastq_name, "^[^#]+"),                #make column 2,extract anything before #
+    superfamily = str_extract(fastq_name, "(?<=/)[^/]+"),            #make column 3, extract between # and /
+    order = str_extract(fastq_name, "(?<=#)[^/]+")      #make column 4, extract anything after /
+  )
+
+write_delim(bergman_rosette,file="dm6_rosette.txt", delim="\t", quote="none")
+```
+
+## import count data and make count
+```{r}
+c18_counts = read.delim("/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/TEtools/18C_TE.count.txt", header=F,sep = " ")
+colnames(c18_counts) <- c("family","superfamily","order","c18_1","c18_2","c18_3","c18_4","c18_5","c18_6","total")
+
+c25_counts = read.delim("/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/TEtools/25C_TE.count.txt", header=F,sep = " ")
+colnames(c25_counts) <- c("family","superfamily","order","c25_1","c25_2","c25_3","c25_4","c25_5","c25_6","total")
+
+c29_counts = read.delim("/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/TEtools/29C_TE.count.txt", header=F,sep = " ")
+colnames(c29_counts) <- c("family","superfamily","order","c29_1","c29_2","c29_3","c29_4","c29_5","c29_6","total")
+
+#combine the 3 count table from 3 different temp
+temp_TE_count <- cbind(c25_counts[, 1:(ncol(c25_counts)-1)], c18_counts[, 4:9], c29_counts[, 4:9])
+rownames(temp_TE_count) <- temp_TE_count[,1]
+```
+
+## make the design matrix 
+```{r}
+sampleInfo <- as.data.frame(
+  cbind(
+    sample_name = colnames(temp_TE_count[,4:ncol(temp_TE_count)]),
+                                      condition = rep(c("control","eighteen","twentynine"), each=6),
+                                      Replicate = rep(1:6, times=3)
+    )
+  )
+sampleInfo$condition <- factor(sampleInfo$condition, levels = c("control","eighteen","twentynine"))
+```
+
+## create dds object
+```{r}
+
+temp_TE <-  DESeqDataSetFromMatrix(countData = temp_TE_count[,4:ncol(temp_TE_count)],
+                            colData = sampleInfo,
+                            design = ~condition
+                            )
+
+temp_TE <-  DESeq(temp_TE, betaPrior=TRUE)
+rld_temp_TE <-  rlog(temp_TE, blind=F)
+rlog_mat <- assay(rld_temp_TE)
+eighteenvs25_res_TE <- results(temp_TE, contrast=c("condition", "eighteen", "control"))
+tweentyninevs25_res_TE <- results(temp_TE, contrast=c("condition", "twentynine", "control"))
+write.csv(eighteenvs25_res_TE, file="eighteenvs25_res_tetools.csv", quote=F, na="0",row.names=T)
+write.csv(tweentyninevs25_res_TE, file="tweentyninevs25_res_tetools.csv", quote=F, na="0",row.names=T)
+write.csv(as.data.frame(rlog_mat), "/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/temp_TE_rlog.csv", row.names = TRUE)
+```
+
+## check variance vs mean
+```{r}
+
+meanSdPlot(assay(temp_TE))
+meanSdPlot(assay(rld_temp_TE)) # it seems like rlog transform reduce variance dependency on mean
+
+#normalized read counts
+norm_count <- counts(temp_TE,normalize=T)
+write.csv(norm_count, file="normalized_read_count.csv",quote=F, na="0", row.names=T)
+```
+
+## volcano plot
+```{r}
+eighteenvs25 <- as.tibble(eighteenvs25_res_TE, rownames = "Family") %>%
+  filter(!is.na((padj))) %>%
+  arrange(padj) %>%
+  mutate(Expression = case_when(log2FoldChange >= 0 & pvalue <=0.05 ~ "upregulate",
+            log2FoldChange <= 0 & pvalue <=0.05  ~ "downregulate", TRUE ~ "unchanged"))
+volcano_18 <- eighteenvs25 %>%
+  ggplot(aes(x=log2FoldChange, y= -log2(pvalue))) + 
+  geom_point(aes(color=Expression)) +
+   xlab("log2 foldchange") +
+  ylab("log2 p-value") +
+  scale_color_manual(values = c("#0072B2","gray","#D55E00")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+pval_18 <- eighteenvs25 %>%
+  filter(pvalue<=0.05)
+label_volcano <- volcano_18 + 
+  geom_text_repel(data=pval_18, mapping = aes(x=log2FoldChange, y= -log2(pvalue), label=Family), max.overlaps = Inf)
+```
+
+## Generate TPM matrix
+```{r}
+#read in dataframe and polish the TE name
+TE_length <- read.delim("/Users/zitagao/Documents/hpc_stuff/dm6_ref/D_mel_transposon_length.txt", header=F,sep = "\t")
+colnames(TE_length) <- c("TE_name", "length")
+TE_length <- TE_length %>% mutate(family = str_extract(TE_name, "^[^#]+"),
+                                  length_in_kb = length/1000)
+TE_length <- TE_length %>% select(family, length_in_kb)
+
+#first normalize count to TE length
+temp_x <- temp_TE_count[,4:ncol(temp_TE_count)]/TE_length$length_in_kb 
+#multiplied the normalized count to 1e6, then weight by the sum of all read in a sample
+temp_tpm <- t(t(temp_x)*1e6/ colSums(temp_x))
+temp_tpm <- as.data.frame(temp_tpm)
+#rlog transform the tpm data
+log2_temp_tpm <- log2(temp_tpm+1)
+write.csv(temp_tpm, file="TE_tpm.csv", quote=F, na="0",row.names=T)
+write.csv(log2_temp_tpm, file="TE_tpm_log2Transform.csv", quote=F, na="0",row.names=T)
+```
+
+import gene+TE dataset
+```{r}
+eighteen <- read.csv(file="/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/edgeRglm_GENE_TE_g18C-g25C.csv", header=T )
+eighteen <- eighteen %>% select(c("Ensembl","Symbol","g18C.g25C_logFC","g18C.g25C_PValue","g18C.g25C_FDR"))
+
+g29 <- read.csv(file="/Users/zitagao/Documents/hpc_stuff/barbosa_RNAseq/edgeRglm_GENE_TE_g29C-g25C.csv", header=T )
+g29 <- g29 %>% select(c("Ensembl","Symbol","g29C.g25C_logFC","g29C.g25C_PValue","g29C.g25C_FDR"))
+
+eighteen %>% group_by_all() %>%
+  filter(n()>1) %>%
+  ungroup()
+
+```
+
+plot volcano
+```{r}
+#271 up and 229 down
+eighteenvs25 <- as_tibble(eighteen) %>%
+  filter(!str_detect(Ensembl, "^FBti")) %>%
+  filter(!is.na((g18C.g25C_FDR))) %>%
+  arrange(g18C.g25C_FDR) %>%
+  mutate(Expression = case_when(g18C.g25C_logFC >= 0 & g18C.g25C_FDR <=0.05 ~ "UP",
+            g18C.g25C_logFC <= 0 & g18C.g25C_FDR <=0.05  ~ "DOWN", TRUE ~ "NS")) 
+eighteenvs25_vol <- eighteenvs25 %>%
+  ggplot(aes(x= g18C.g25C_logFC, y= -log10(g18C.g25C_FDR))) + 
+  geom_point(aes(color=Expression), show.legend=F) +
+   xlab("log2 foldchange") +
+  ylab("-log10 FDR") +
+  scale_color_manual(values = c("#2CBDF2","gray","#3A3AFA")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "black")+
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "black",) +
+  theme(axis.line = element_line(linewidth = 1.0),
+        axis.text.x = element_text(size=17),
+       axis.text.y = element_text(size=17), 
+       axis.title = element_text(size=19))
+
+ggsave(filename="volcano_18vs25_geneTE.pdf", plot=eighteenvs25_vol, height=8, width=8, unit="in")
+write.csv(eighteenvs25, file="gene_TE_g18C-g25C_results.csv", quote = F, row.names=F)
+
+#81 down and 93 up 
+g29vs25 <- as_tibble(g29) %>%
+  filter(!str_detect(Ensembl, "^FBti")) %>%
+  filter(!is.na((g29C.g25C_FDR))) %>%
+  arrange(g29C.g25C_FDR) %>%
+  mutate(Expression = case_when(g29C.g25C_logFC >= 0 & g29C.g25C_FDR <=0.05 ~ "UP",
+            g29C.g25C_logFC <= 0 & g29C.g25C_FDR <=0.05  ~ "DOWN", TRUE ~ "NS"))
+
+g29vs25_vol <- g29vs25 %>%
+  ggplot(aes(x= g29C.g25C_logFC, y= -log10(g29C.g25C_FDR))) + 
+  geom_point(aes(color=Expression), show.legend=F) +
+   xlab("log2 foldchange") +
+  ylab("-log10 FDR") +
+  scale_color_manual(values = c("#FF7F7F","gray","#FF1A1A")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "black")+
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "black",) +
+  theme(axis.line = element_line(linewidth = 1.0),
+        axis.text.x = element_text(size=17),
+       axis.text.y = element_text(size=17), 
+       axis.title = element_text(size=19))
+
+ggsave(filename="volcano_29vs25_geneTE.pdf", plot=g29vs25_vol, height=8, width=8, unit="in")
+write.csv(g29vs25, file="gene_TE_g29C-g25C_results.csv", quote = F, row.names=F)
+```
+
+add FBgn
+```{r}
+fbgn <- read.table("transposon_sequence_set_fbgn.txt", sep="", header=T, stringsAsFactors = FALSE)
+eighteen <- read.table("TEtools/eighteenvs25_res_tetools.csv",header=T, sep = ",",stringsAsFactors = FALSE)
+eighteen <- eighteen %>% rename(Family=X)
+eighteen <- right_join(fbgn[,1:2],eighteen, by=c("Symbol"="Family"))
+twentynine <- read.table("TEtools/tweentyninevs25_res_tetools.csv",header=T, sep = ",",stringsAsFactors = FALSE)
+twentynine <- twentynine %>% rename(Family=X)
+twentynine <- right_join(fbgn[,1:2],twentynine, by=c("Symbol"="Family"))
+write.csv(eighteen,"TEtools/eighteen_fbgn.csv", quote=F, col.names=T, row.names=F)
+write.csv(twentynine,"TEtools/twentynine_fbgn.csv", quote=F, col.names=T, row.names=F)
+```
