@@ -1,0 +1,128 @@
+name	family	superfamily	order	FB_gene_Id
+Tc3#DNA/Tc1-Mariner	Tc3	Tc1-Mariner	DNA	FBgn006119
+1360#DNA/P	1360	P	DNA	FBgn0005673
+17.6#LTR/Gypsy	17.6	Gypsy	LTR	FBgn0000004
+1731#LTR/Copia	1731	Copia	LTR	FBgn0000007
+297#LTR/Gypsy	297	Gypsy	LTR	FBgn0000005
+3S18#LTR/Bel-Pao	3S18	Bel-Pao	LTR	FBgn0005384
+412#LTR/Gypsy	412	Gypsy	LTR	FBgn0000006
+accord#LTR/Gypsy	accord	Gypsy	LTR	FBgn0063447
+accord2#LTR/Gypsy	accord2	Gypsy	LTR	FBgn0063782
+aurora-element#LTR/Bel-Pao	aurora-element	Bel-Pao	LTR	FBgn0010103
+baggins#LINE/Loa	baggins	Loa	LINE	FBgn0063440
+Bari1#DNA/Tc1-Mariner	Bari1	Tc1-Mariner	DNA	FBgn0005773
+Bari2#DNA/Tc1-Mariner	Bari2	Tc1-Mariner	DNA	FBgn0064134
+blood#LTR/Gypsy	blood	Gypsy	LTR	FBgn0000199
+BS#LINE/Jockey	BS	Jockey	LINE	FBgn0000224
+BS3#LINE/Jockey	BS3	Jockey	LINE	FBgn0067624
+BS4#LINE/Jockey	BS4	Jockey	LINE	FBgn0067623 
+Burdock#LTR/Gypsy	Burdock	Gypsy	LTR	FBgn0010302
+Circe#LTR/Gypsy	Circe	Gypsy	LTR	FBgn0022937
+copia#LTR/Copia	copia	Copia	LTR	FBgn0000349
+Cr1a#LINE/CR1	Cr1a	CR1	LINE	
+diver#LTR/Bel-Pao	diver	Bel-Pao	LTR	FBgn0043969
+diver2#LTR/Bel-Pao	diver2	Bel-Pao	LTR	FBgn0063439
+Dm88#LTR/Copia	Dm88	Copia	LTR	FBgn0062343
+Doc#LINE/Jockey	Doc	Jockey	LINE	
+Doc2-element#LINE/Jockey	Doc2-element	Jockey	LINE	
+Doc3-element#LINE/Jockey	Doc3-element	Jockey	LINE	
+Doc4-element#LINE/Jockey	Doc4-element	Jockey	LINE	
+F-element#LINE/Jockey	F-element	Jockey	LINE	
+FB#DNA/Tc1-Mariner	FB	Tc1-Mariner	DNA	
+flea#LTR/Gypsy	flea	Gypsy	LTR	
+frogger#LTR/Copia	frogger	Copia	LTR	
+Fw2#LINE/Jockey	Fw2	Jockey	LINE	
+Fw3#LINE/Jockey	Fw3	Jockey	LINE	
+G-element#LINE/Jockey	G-element	Jockey	LINE	
+G2#LINE/Jockey	G2	Jockey	LINE	
+G3#LINE/Jockey	G3	Jockey	LINE	
+G4#LINE/Jockey	G4	Jockey	LINE	
+G5#LINE/Jockey	G5	Jockey	LINE	
+G5A#LINE/Jockey	G5A	Jockey	LINE	
+G6#LINE/Jockey	G6	Jockey	LINE	
+G7#LINE/Jockey	G7	Jockey	LINE	
+GATE#LTR/Bel-Pao	GATE	Bel-Pao	LTR	
+gtwin#LTR/Gypsy	gtwin	Gypsy	LTR	
+gypsy#LTR/Gypsy	gypsy	Gypsy	LTR	FBgn0001167
+gypsy1#LTR/Gypsy	gypsy1	Gypsy	LTR	
+gypsy10#LTR/Gypsy	gypsy10	Gypsy	LTR	
+gypsy11#LTR/Gypsy	gypsy11	Gypsy	LTR	FBgn0067386
+gypsy12#LTR/Gypsy	gypsy12	Gypsy	LTR	
+gypsy2#LTR/Gypsy	gypsy2	Gypsy	LTR	FBgn0063435
+gypsy3#LTR/Gypsy	gypsy3	Gypsy	LTR	FBgn0063434
+gypsy4#LTR/Gypsy	gypsy4	Gypsy	LTR	
+gypsy5#LTR/Gypsy	gypsy5	Gypsy	LTR	
+gypsy6#LTR/Gypsy	gypsy6	Gypsy	LTR	
+gypsy7#LTR/Gypsy	gypsy7	Gypsy	LTR	
+gypsy8#LTR/Gypsy	gypsy8	Gypsy	LTR	
+gypsy9#LTR/Gypsy	gypsy9	Gypsy	LTR	FBgn0067382
+HB#DNA/Tc1-Mariner	HB	Tc1-Mariner	DNA	
+Helena#LINE/Jockey	Helena	Jockey	LINE	
+Helitron#RC/Helitron	Helitron	Helitron	RC	
+HeT-A#LINE/Jockey	HeT-A	Jockey	LINE	
+HMS-Beagle#LTR/Gypsy	HMS-Beagle	Gypsy	LTR	
+HMS-Beagle2#LTR/Gypsy	HMS-Beagle2	Gypsy	LTR	
+hobo#DNA/hAT	hobo	hAT	DNA	
+hopper#DNA/Transib	hopper	Transib	DNA	
+hopper2#DNA/Transib	hopper2	Transib	DNA	
+I-element#LINE/I	I-element	I	LINE	
+Idefix#LTR/Gypsy	Idefix	Gypsy	LTR	
+INE-1#DNA/Helitron	INE-1	Helitron	DNA	
+invader1#LTR/Gypsy	invader1	Gypsy	LTR	
+invader2#LTR/Gypsy	invader2	Gypsy	LTR	
+invader3#LTR/Gypsy	invader3	Gypsy	LTR	
+invader4#LTR/Gypsy	invader4	Gypsy	LTR	
+invader5#LTR/Gypsy	invader5	Gypsy	LTR	
+invader6#LTR/Gypsy	invader6	Gypsy	LTR	
+Ivk#LINE/I	Ivk	I	LINE	
+jockey#LINE/Jockey	jockey	Jockey	LINE	
+jockey2#LINE/Jockey	jockey2	Jockey	LINE	
+Juan#LINE/Jockey	Juan	Jockey	LINE	
+looper1#DNA/PiggyBac	looper1	PiggyBac	DNA	
+mariner2#DNA/Tc1-Mariner	mariner2	Tc1-Mariner	DNA	
+Max-element#LTR/Bel-Pao	Max-element	Bel-Pao	LTR	
+McClintock#LTR/Gypsy	McClintock	Gypsy	LTR	
+mdg1#LTR/Gypsy	mdg1	Gypsy	LTR	FBgn0002697
+mdg3#LTR/Gypsy	mdg3	Gypsy	LTR	FBgn0002698
+micropia#LTR/Gypsy	micropia	Gypsy	LTR	
+NOF#DNA/MuDR	NOF	MuDR	DNA	
+opus#LTR/Gypsy	opus	Gypsy	LTR	
+Osvaldo#LTR/Gypsy	Osvaldo	Gypsy	LTR	
+P-element#DNA/P	P-element	P	DNA	
+pogo#DNA/Tc1-Mariner	pogo	Tc1-Mariner	DNA	
+Porto1#LINE/Jockey	Porto1	Jockey	LINE	
+Q-element#LINE/CR1	Q-element	CR1	LINE	
+Quasimodo#LTR/Gypsy	Quasimodo	Gypsy	LTR	
+R1-2#LINE/R1	R1-2	R1	LINE	
+R1A1-element#LINE/R1	R1A1-element	R1	LINE	
+R2-element#LINE/R2	R2-element	R2	LINE	
+roo#LTR/Bel-Pao	roo	Bel-Pao	LTR	
+rooA#LTR/Bel-Pao	rooA	Bel-Pao	LTR	
+rover#LTR/Gypsy	rover	Gypsy	LTR	
+Rt1a#LINE/R1	Rt1a	R1	LINE	
+Rt1b#LINE/R1	Rt1b	R1	LINE	
+Rt1c#LINE/R1	Rt1c	R1	LINE	
+S-element#DNA/Tc1-Mariner	S-element	Tc1-Mariner	DNA	
+S2#DNA/Tc1-Mariner	S2	Tc1-Mariner	DNA	
+springer#LTR/Gypsy	springer	Gypsy	LTR	
+Stalker#LTR/Gypsy	Stalker	Gypsy	LTR	
+Stalker2#LTR/Gypsy	Stalker2	Gypsy	LTR	
+Stalker3#LTR/Gypsy	Stalker3	Gypsy	LTR	
+Stalker4#LTR/Gypsy	Stalker4	Gypsy	LTR	
+Tabor#LTR/Gypsy	Tabor	Gypsy	LTR	
+TAHRE#LINE/Jockey	TAHRE	Jockey	LINE	
+TART-A#LINE/Jockey	TART-A	Jockey	LINE	
+TART-B#LINE/Jockey	TART-B	Jockey	LINE	
+TART-C#LINE/Jockey	TART-C	Jockey	LINE	
+Tc1-2#DNA/Tc1-Mariner	Tc1-2	Tc1-Mariner	DNA	
+Tc1#DNA/Tc1-Mariner	Tc1	Tc1-Mariner	DNA	
+Tirant#LTR/Gypsy	Tirant	Gypsy	LTR	
+Tom1#LTR/Gypsy	Tom1	Gypsy	LTR	
+transib1#DNA/Transib	transib1	Transib	DNA	
+transib2#DNA/Transib	transib2	Transib	DNA	
+transib3#DNA/Transib	transib3	Transib	DNA	
+transib4#DNA/Transib	transib4	Transib	DNA	
+Transpac#LTR/Gypsy	Transpac	Gypsy	LTR	
+X-element#LINE/Jockey	X-element	Jockey	LINE	
+Xanthias#LTR/Copia	Xanthias	Copia	LTR	
+ZAM#LTR/Gypsy	ZAM	Gypsy	LTR	
