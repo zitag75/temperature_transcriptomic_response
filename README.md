@@ -7,6 +7,6 @@ This directory contains scripts for TE family expression analysis:
 1. `trim_galore.sh`:script for adapter trimming.
 2. `TEtools.sh`: script for alignment to TE consensus sequence and quantifying TE family-level expression using the `TEtools` `TEcount` module.
 3. `TE_differential_analysis.Rmd`: Script for performing differential expression analysis with `DESeq2`, normalization, and visualization.
+4. `dm6_rosette.txt`: the rosette file requires for `TEcount`, name is the fasta name for the TE consensus sequence, followed by family, superfamily, order, and the fly base gene ID. 
 
-## gene_expression
-This directory contains scripts for gene expression analysis
+
